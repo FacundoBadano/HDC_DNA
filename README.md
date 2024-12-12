@@ -2,7 +2,7 @@
 
 ## Description
 
-This project, developed within the framework of the Catholic University of Uruguay (UCUDAL), has as its main objective to analyze the behavior of HDC (Hyperdimensional Computing) using binary hypervectors generated from the n-gram technique applied to DNA sequences.
+This project, developed within the framework of the Catholic Universidad Católica del Uruguay (UCUDAL), has as its main objective to analyze the behavior of HDC (Hyperdimensional Computing) using binary hypervectors generated from the n-gram technique applied to DNA sequences.
 
 
 ## Project setup
