@@ -1,4 +1,9 @@
-# hdc_adn
+# HDC
+
+## Description
+
+This project, developed within the framework of the Catholic University of Uruguay (UCUDAL), has as its main objective to analyze the behavior of HDC (Hyperdimensional Computing) using binary hypervectors generated from the n-gram technique applied to DNA sequences.
+
 
 ## Project setup
 ```
@@ -7,7 +12,7 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run dev
 ```
 
 ### Compiles and minifies for production
