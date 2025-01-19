@@ -1,22 +1,38 @@
 <template>
-  <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">Generador de Hipervectores ADN</h1>
+  <div class="p-24">
+    <h1 class="text-2xl font-bold mb-4 text-center">
+      Calculadora de Distancia entre Secuencias ADN
+    </h1>
+
+    <div class="bg-blue-500 text-white p-4 rounded">
+      Indicar ambas secuencias para calcular su distancia.
+    </div>
+
     <input
-      v-model="sequence"
+      v-model="sequence1"
       type="text"
       class="border border-gray-300 rounded p-2 mb-4 w-full"
-      placeholder="Ingrese secuencia de ADN (G, T, K, A)"
+      placeholder="Ingrese la primera secuencia de ADN (G, T, C, A)"
     />
+
+    <input
+      v-model="sequence2"
+      type="text"
+      class="border border-gray-300 rounded p-2 mb-4 w-full"
+      placeholder="Ingrese la segunda secuencia de ADN (G, T, C, A)"
+    />
+
     <button
-      @click="generateHV"
+      @click="calculateDistance"
       class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
     >
-      Generar Hipervector
+      Calcular Distancia
     </button>
+
     <div v-if="error" class="text-red-500 mt-4">{{ error }}</div>
-    <div v-if="hypervector" class="mt-4">
-      <h2 class="text-xl font-semibold">Hipervector generado:</h2>
-      <pre class="bg-gray-100 p-2 rounded">{{ hypervector }}</pre>
+    <div v-if="distance !== null" class="mt-4">
+      <h2 class="text-xl font-semibold">Distancia Calculada:</h2>
+      <p class="bg-gray-100 p-2 rounded">{{ distance }}</p>
     </div>
   </div>
 </template>
@@ -25,33 +41,30 @@
 import { ref } from "vue";
 import axios from "axios";
 
-const sequence = ref("");
-const hypervector = ref(null);
+const sequence1 = ref("");
+const sequence2 = ref("");
+const distance = ref(null);
 const error = ref(null);
 
-const generateHV = async () => {
-  hypervector.value = null;
+const calculateDistance = async () => {
+  distance.value = null;
   error.value = null;
 
+  if (!sequence1.value || !sequence2.value) {
+    error.value = "Por favor, ingrese ambas secuencias.";
+    return;
+  }
+
   try {
-    console.log(sequence.value);
-    const post = { sequence: sequence.value };
-    console.log(post);
+    const response = await axios.post("http://127.0.0.1:8000/generate-hv", {
+      sequence1: sequence1.value,
+      sequence2: sequence2.value,
+    });
 
-    const response = await axios.post(
-      "http://127.0.0.1:8000/generate-hv",
-      post
-    );
-
-    console.log(response.data);
-
-    if (response.data.error) {
-      error.value = response.data.error;
-    } else {
-      hypervector.value = response.data.hypervector;
-    }
-  } catch {
-    error.value = "Error al comunicarse con el servidor.";
+    distance.value = response.data.distance.toFixed(4);
+  } catch (err) {
+    error.value =
+      err.response?.data?.detail || "Error al comunicarse con el servidor.";
   }
 };
 </script>
